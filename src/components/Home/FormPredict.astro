@@ -1,0 +1,43 @@
+---
+import CustomTable from "../CustomTable.astro";
+import Labelnput from "./Labelnput.astro";
+
+---
+
+<form class="w-full  mx-auto" id="form-patient">
+    <Labelnput label="Sexo" id="sex" placeholder="Ingresa el sexo" />
+    <Labelnput label="Edad" id="age" placeholder="Ingresa la edad" />
+    <Labelnput label="Angina" id="angina" placeholder="Ingresa la angina" />
+    <Labelnput label="Tipo de dolor torácico" id="chest_pain_type" placeholder="Ingresa el tipo de dolor torácico" />
+    <CustomTable />
+    <Labelnput label="Presión arterial en reposo/(mm Hg)" id="resting_blood_pressure" placeholder="Ingresa la presión arterial en reposo" />
+    <Labelnput label="Colesterol(mg/dl)" id="cholesterol" placeholder="Ingresa el colesterol" />
+    <Labelnput label="Glucemia en ayunas > 120 mg/dl (1 = verdadero; 0 = falso)" id="fasting_blood_sugar" placeholder="Ingresa la glucemia en ayunas" />
+    <Labelnput label="Electrocardiograma en reposo" id="resting_electrocardiographic_results" placeholder="Ingresa el electrocardiograma en reposo" />
+    <Labelnput label="Frecuencia cardíaca máxima alcanzada" id="maximum_heart_rate_achieved" placeholder="Ingresa la frecuencia cardíaca máxima alcanzada" />
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" id="btn-predict">Predecir</button>
+</form>
+
+<script>
+    const formPatient = document.getElementById('form-patient');
+    const btnPredict = document.getElementById('btn-predict');
+    const valueInputs = document.querySelectorAll('#form-patient input');
+    const dataPatient = {}
+    const handleChangeInput = (e: Event) => {
+        dataPatient[e.target.id as string] = e.target.value;
+        console.log(dataPatient);
+    }
+    valueInputs.forEach(input => {
+        input.addEventListener('change', handleChangeInput);
+    });
+    
+    const handlePredict = (e) => {
+        e.preventDefault();
+        console.log('Predecir');
+    }
+    formPatient?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        
+    });
+</script>
