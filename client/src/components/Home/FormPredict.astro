@@ -76,6 +76,15 @@ import Labelnput from "./Labelnput.astro";
         try {
             const response = await getPredict();
             console.log(response);
+            const probPredict = document.getElementById('prob-predict') as HTMLInputElement | null;
+            const resultPredict = document.getElementById('result-predict');
+            const { prob, result } = response;
+            if (probPredict) {
+                probPredict.textContent = prob[result].toFixed(2) + '%';
+            }
+            if (resultPredict) {
+                resultPredict.textContent = result == 1 ? 'Tienes riesgo de sufrir un ataque al corazón' : 'No tienes riesgo de sufrir un ataque al corazón';
+            }
         } catch (error) {
             console.error('Error en la solicitud:', error);
         }
