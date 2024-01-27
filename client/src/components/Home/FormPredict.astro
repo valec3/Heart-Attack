@@ -61,7 +61,7 @@ import Labelnput from "./Labelnput.astro";
     e.preventDefault();
     
     const getPredict = async () => {
-        const response = await fetch('https://model-log.onrender.com/predict', {
+        const response = await fetch('https://model-api-ha.onrender.com/predict', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,14 +76,14 @@ import Labelnput from "./Labelnput.astro";
         try {
             const response = await getPredict();
             console.log(response);
-            const probPredict = document.getElementById('prob-predict') as HTMLInputElement | null;
+            const probPredict = document.getElementById('prob-predict');
             const resultPredict = document.getElementById('result-predict');
-            const { prob, result } = response;
+            const { predictions:prob, y_pred:result } = response;
             if (probPredict) {
-                probPredict.textContent = prob[result].toFixed(2) + '%';
+                probPredict.innerText  = prob[0][result[0]].toFixed(2)*100 + '%';
             }
             if (resultPredict) {
-                resultPredict.textContent = result == 1 ? 'Tienes riesgo de sufrir un ataque al corazón' : 'No tienes riesgo de sufrir un ataque al corazón';
+                resultPredict.innerText  = result[0] == 1 ? 'El paciente tiene riesgo de sufrir un ataque al corazón' : 'El paciente no tiene riesgo de sufrir un ataque al corazón';
             }
         } catch (error) {
             console.error('Error en la solicitud:', error);

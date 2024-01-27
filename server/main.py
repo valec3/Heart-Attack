@@ -11,8 +11,9 @@ app = FastAPI()
 origins = [
     "http://localhost.tiangolo.com",
     "https://localhost.tiangolo.com",
-    "http://localhost",
+    "http://localhost/*",
     "http://localhost:4321",
+    "http://localhost:4321/",
     "http://localhost:8080",
     "https://heart-attack-steel.vercel.app",
     "https://heart-attack-steel.vercel.app/",
