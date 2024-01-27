@@ -57,21 +57,29 @@ import Labelnput from "./Labelnput.astro";
         console.log('Predecir');
     }
 
-    formPatient?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const getPredict = async () => {
-            const response = await fetch('https://model-log.onrender.com', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dataPatient)
-            });
-            const data = await response.json();
-            console.log(data);
+    formPatient?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const getPredict = async () => {
+        const response = await fetch('https://model-log.onrender.com', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataPatient)
+        });
+        const data = await response.json();
+        console.log(data);
+        return data; 
         }
-        const response = getPredict();
-        console.log(response);
+
+        try {
+            const response = await getPredict();
+            console.log(response);
+        } catch (error) {
+            console.error('Error en la solicitud:', error);
+        }
     });
+
 
 </script>

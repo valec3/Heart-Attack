@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 import joblib
 import pandas as pd
@@ -6,7 +7,27 @@ from sklearn.preprocessing import RobustScaler
 import numpy as np
 
 app = FastAPI()
-df = pd.read_csv("heart.csv")
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+    "https://heart-attack-steel.vercel.app",
+    "https://heart-attack-steel.vercel.app/",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
+# df = pd.read_csv("heart.csv")
 # Cargar modelo y escalador
 modelo = joblib.load("modelo_logreg.pkl")
 # Para cargar el escalador más tarde
@@ -28,11 +49,6 @@ def predictor(nuevos_datos):
         # Convertir la lista de diccionarios a un DataFrame de pandas
         print("Converting to DataFrame...")
         df_nuevos_datos = pd.DataFrame([nuevos_datos])
-        cat_cols = ['sex', 'exng', 'caa', 'cp', 'fbs', 'restecg', 'slp', 'thall']
-        con_cols = ["age", "trtbps", "chol", "thalachh", "oldpeak"]
-        
-        df_nuevos_datos = pd.DataFrame([nuevos_datos]
-        )
         cat_cols = ['sex', 'exng', 'caa', 'cp', 'fbs', 'restecg', 'slp', 'thall']
         con_cols = ["age", "trtbps", "chol", "thalachh", "oldpeak"]
 
