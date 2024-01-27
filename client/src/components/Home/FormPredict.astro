@@ -61,7 +61,7 @@ import Labelnput from "./Labelnput.astro";
     e.preventDefault();
     
     const getPredict = async () => {
-        const response = await fetch('https://model-log.onrender.com', {
+        const response = await fetch('https://model-log.onrender.com/predict', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
