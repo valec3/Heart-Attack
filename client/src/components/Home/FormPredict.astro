@@ -1,0 +1,77 @@
+---
+import CustomTable from "../CustomTable.astro";
+import Labelnput from "./Labelnput.astro";
+
+---
+
+<form class="w-full  mx-auto" id="form-patient">
+    <Labelnput label="Edad" id="age" placeholder="Ingresa la edad" />
+    <Labelnput label="Sexo" id="sex" placeholder="Ingresa el sexo" />
+    <Labelnput label="Tipo de dolor torácico" id="cp" placeholder="Ingresa el tipo de dolor torácico" />
+    <CustomTable />
+    <Labelnput label="Presión arterial en reposo/(mm Hg)" id="trtbps" placeholder="Ingresa la presión arterial en reposo" />
+    <Labelnput label="Colesterol(mg/dl)" id="chol" placeholder="Ingresa el colesterol" />
+    <Labelnput label="Glucemia en ayunas > 120 mg/dl (1 = verdadero; 0 = falso)" id="fbs" placeholder="Ingresa 1 o 0 según corresponda" />
+    <Labelnput label="Electrocardiograma en reposo" id="restecg" placeholder="Ingresa el electrocardiograma en reposo" />
+    <Labelnput label="Frecuencia cardíaca máxima alcanzada" id="thalachh" placeholder="Ingresa la frecuencia cardíaca máxima alcanzada" />
+    <Labelnput label="Angina inducida por ejercicio" id="exng" placeholder="Ingresa la angina inducida por ejercicio" />
+    <Labelnput label="Número de vasos principales coloreados por fluoroscopia" id="caa" placeholder="Ingresa el número de vasos principales coloreados por fluoroscopia" />
+    <Labelnput label="Pendiente del segmento ST de ejercicio pico (1 = subida; 2 = plana; 3 = bajada)" id="slp" placeholder="Ingresa la pendiente del segmento ST de ejercicio pico" />
+    <Labelnput label="Pico de ejercicio ST" id="oldpeak" placeholder="Ingresa el pico de ejercicio ST" />
+    <Labelnput label="Resultado de la prueba de talio" id="thall" placeholder="Ingresa el resultado de la prueba de talio" />
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" id="btn-predict">Predecir</button>
+</form>
+
+<script>
+    type DataPatient = {
+        age: string | number,
+        sex: string | number,
+        cp: string | number,
+        trtbps: string | number,
+        chol: string | number,
+        fbs: string | number,
+        restecg: string | number,
+        thalachh: string | number,
+        exng: string | number,
+        oldpeak: string | number,
+        slp: string | number,
+        caa: string | number,
+        thall: string | number,
+    };
+    const formPatient = document.getElementById('form-patient');
+    const btnPredict = document.getElementById('btn-predict');
+    const valueInputs = document.querySelectorAll('#form-patient input');
+    const dataPatient = {} as DataPatient;
+    const handleChangeInput = (e: Event) => {
+        let inputElement = e.target as HTMLInputElement;
+        const { id, value } = inputElement;
+        dataPatient[id as keyof DataPatient] = value;
+        console.log(dataPatient);
+    }
+    valueInputs.forEach(input => {
+        input.addEventListener('change', handleChangeInput);
+    });
+    
+    const handlePredict = (e:Event) => {
+        e.preventDefault();
+        console.log('Predecir');
+    }
+
+    formPatient?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const getPredict = async () => {
+            const response = await fetch('https://model-log.onrender.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataPatient)
+            });
+            const data = await response.json();
+            console.log(data);
+        }
+        const response = getPredict();
+        console.log(response);
+    });
+
+</script>
