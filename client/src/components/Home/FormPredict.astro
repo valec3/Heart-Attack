@@ -76,14 +76,11 @@ import Labelnput from "./Labelnput.astro";
         try {
             const response = await getPredict();
             console.log(response);
-            const probPredict = document.getElementById('prob-predict');
             const resultPredict = document.getElementById('result-predict');
             const { predictions:prob, y_pred:result } = response;
-            if (probPredict) {
-                probPredict.innerText  = prob[0][result[0]].toFixed(2)*100 + '%';
-            }
+            const probPredict  = prob[0][result[0]].toFixed(2)*100 + '%';
             if (resultPredict) {
-                resultPredict.innerText  = result[0] == 1 ? 'El paciente tiene riesgo de sufrir un ataque al corazón' : 'El paciente no tiene riesgo de sufrir un ataque al corazón';
+                resultPredict.innerHTML  = result[0] == 1 ? `El paciente tiene un <span id="prob-predict" class="text-red-600">${probPredict}</span> probabilidad de tener un ataque al corazón` : `El paciente tiene un ${probPredict} probabilidad de no tener un ataque al corazón`;
             }
         } catch (error) {
             console.error('Error en la solicitud:', error);
